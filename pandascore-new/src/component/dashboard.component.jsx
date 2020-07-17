@@ -137,7 +137,6 @@ export class dashboardcomponent extends Component {
     this.state.pandascoreData.map(data => {
       return { ...data, selected: false };
     });
-    console.log("watch list value found from watchlist", this.props.location.state);
 
     const pandascoreTableTitle = this.state.columns.map(key => {
       return (
