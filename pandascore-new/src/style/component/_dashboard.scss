@@ -5,17 +5,18 @@
     height: 100vh;
     width: 100vw;
     section {
-        table {
-            font-family: arial, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
+        td {
+            border: 4px solid #ecd1e6;
+            text-align: center;
+            padding: 4px;
+            width: 200px;
         }
-        td,
         th {
             border: 4px solid #ecd1e6;
-            text-align: left;
+            text-align: center;
             padding: 8px;
             width: 200px;
+            background-color: palevioletred;
         }
         tr:nth-child(even) {
             background-color: #5bc3d7;
@@ -25,45 +26,100 @@
             width: 25rem;
             height: 45px;
             background: rgba(0, 0, 0, 0.2);
-            border-radius: 10px;
-            margin-bottom: 15px;
-            margin-left: 10px;
-            box-shadow: $shadow;
+            border-radius: 5px;
+            border: 1px solid;
+            padding: 5px;
+            // box-shadow: $shadow;
         }
-    }
-    // table {
-    //     font-family: arial, sans-serif;
-    //     border-collapse: collapse;
-    //     width: 100%;
-    // }
-    // td,
-    // th {
-    //     border: 1px solid #dddddd;
-    //     text-align: left;
-    //     padding: 8px;
-    // }
-    // tr:nth-child(even) {
-    //     background-color: #dddddd;
-    // }
-    table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-    td,
-    th {
-        border: 4px solid #ecd1e6;
-        text-align: left;
-        padding: 8px;
-        width: 200px;
-    }
-    tr:nth-child(even) {
-        background-color: #5bc3d7;
-    }
-    h2 {
-        text-align: center;
-        color: #627c22;
-        margin-top: $normal;
-        margin-bottom: $normal;
+        .search {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            font-weight: 700;
+            font-size: large;
+        }
+        .Table_ {
+            display: flex;
+            justify-content: center;
+        }
+        .dash {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            border: 2px solid #e7667c;
+            height: 80px;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        .proj-name {
+            font-size: 23px;
+            margin-left: 20px;
+        }
+        .name-1 {
+            color: black;
+            font-weight: 700;
+        }
+        .name-2 {
+            color: #b300de;
+            font-weight: 700;
+        }
+        .panda-div-1 {
+            display: flex;
+            justify-content: space-around;
+            width: 30%
+        }
+        .panda-div-2 {
+            border: 2px solid;
+            height: 35px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            color: #c3178e;
+            cursor: pointer;
+        }
+        .panda-div-3 {
+            display: flex;
+            justify-content: space-around;
+            width: 15em;
+            margin-left: 4.2em;
+            margin-top: 5vh;
+        }
+        .panda-div-4 {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            border: 2px solid #e7667c;
+            height: 80px;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+        .closeicon {
+            display: flex;
+            justify-content: space-around;
+            width: 30%;
+        }
+        .panda-div-5 {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .panda-img {
+            display: flex;
+            justify-content: center;
+            font-weight: 700;
+            color: rebeccapurple;
+            font-size: 1.5em;
+            background: cadetblue;
+        }
+        .panda-div-6 {
+            background-color: rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 45em;
+            color: bisque;
+            font-size: x-large;
+        }
     }
 }

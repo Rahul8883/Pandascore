@@ -4,14 +4,24 @@ import { Button } from "@material-ui/core";
 import { userAction } from '../action/user.action';
 import { connect } from 'react-redux';
 import Helmet from 'react-helmet';
+
+/**
+ * <function description>
+ * @param   {state} state <this parameter is use to take all value from  Reducer>
+ * @return  {state}     <and return that value in component for further use>
+ */
+
 function mapState(state) {
   console.log("state info in Login component", state);
   return { state }
 }
-
+/**
+ * javaSCript object making for action creater.
+ */
 const actionCraeter = {
   login: userAction.login
 }
+
 export class login extends Component {
   constructor(props) {
     super(props)
@@ -21,7 +31,9 @@ export class login extends Component {
       password: ""
     }
   }
-
+/**
+ * These function is use for event occur in text field
+ */
   handleChange_email = event => {
     const email = event.target.value;
     this.setState({ email });
@@ -30,15 +42,15 @@ export class login extends Component {
     const password = event.target.value;
     this.setState({ password });
   }
-
-
+/**
+ * This function is use to submit all the data which is submited from user end and hit the backend part.
+ */
   handleSubmit = () => {
     let _loginData = {
       email: this.state.email,
       password: this.state.password,
     }
     this.props.login(_loginData)
-    //this.props.history.replace('/main')
   }
 
   render() {
@@ -57,9 +69,9 @@ export class login extends Component {
                             className="field"
                             placeholder="Email"
                             onChange={this.handleChange_email}
+                            value={this.state.email}
                             variant="outlined"
                             fullWidth
-                            value={this.state.email}
                             validators={["required", "isEmail"]}
                             errorMessages={["this field is required", "email is not valid"]} />
               </div>
