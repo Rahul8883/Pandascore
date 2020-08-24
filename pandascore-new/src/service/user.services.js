@@ -1,6 +1,7 @@
 import axios from 'axios'
 export const userService = {
         login,
+        userRegister,
         getAllData
     }
     /**
@@ -8,18 +9,30 @@ export const userService = {
      * this is fundoo back-end url for login only.
      */
 const fundooUrl = "http://fundoonotes.incubation.bridgelabz.com/api";
+
+
+
+export function userRegister(data) {
+    console.log("Data", data);
+
+    return axios.post(fundooUrl + '/user/userSignup', data, {})
+}
+
+
+
+
 export function login(data) {
     return axios.post(fundooUrl + "/user/login", data)
 }
 
 /**
- * <login  Login function>
+ * <getAllData  getAllData function>
  * this is pandascore back-end url for  get response of all champ data.
  * @param {data} data this data is comes from dashboard component.
  */
 
 export function getAllData(data) {
-    return axios.get(`https://api.pandascore.co/lol/champions?page[number]=${data}&page[size]=10&token=` + localStorage.getItem("token"))
+    return axios.get(`https://api.pandascore.co/lol/champions?page[number]=1&page[size]=&token=` + localStorage.getItem("token"))
 }
 
 /**
@@ -29,5 +42,7 @@ export function getAllData(data) {
  */
 
 export function getSearchResult(data) {
+    console.log("data found in service for search result", data);
+
     return axios.get(`https://api.pandascore.co/lol/champions?search[name]=${data}&token=` + localStorage.getItem("token"))
 }

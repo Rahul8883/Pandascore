@@ -8,7 +8,6 @@ import { Link } from 'react-router-dom'
  * Login (ID : rr582619@gmail.com, Password : rahul@700)
  * Registration
  */
-
 const Home = () => (
     <Fragment>
         <Helmet> <title>Quiz App -  Home</title></Helmet>
@@ -21,7 +20,7 @@ const Home = () => (
                 <h2 style={{ textAlign: "center", fontSize: "3rem" }}>The <span style={{ color: "#b300de" }}>esports</span>  data <span style={{ color: "#b300de" }}>API</span> </h2>
                 <div className="auth-container">
                     <Link to="/login" className="auth-buttons" id="login-button">Login</Link>
-                    <Link to="registration" className="auth-buttons" id="register-button">Register</Link>
+                    <Link to="/registration" className="auth-buttons" id="register-button">Register</Link>
                 </div>
             </section>
         </div>

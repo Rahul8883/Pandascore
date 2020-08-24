@@ -1,54 +1,121 @@
 import React, { Component, Fragment } from "react";
 import { getAllData, getSearchResult } from "../service/user.services";
-import CloseIcon from "@material-ui/icons/Close";
 import Helmet from "react-helmet";
 import { Slide, Button,} from "@material-ui/core";
 import Dialog from '@material-ui/core/Dialog';
+import Pagination from '../component/pagination';
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
+
+// const paginate = numberFromPagination => setCurrentPage(numberFromPagination);
+// Pagination.paginate=(data)=>{
+// console.log(data);
+
+// }
+
+
 export class dashboardcomponent extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
+      currentPage : 1,
+      rowPageRange: 10,
+      loading : false,
       pandascoreData: [],
+      currentDataDisplay : [],
       count: 1,
       selectedData: [],
       columns: [
-        { name: "Name", armor: "Armor", attackdamage: "Attack Damage", attackrange: "Attack Range", hpperlevel: "Hpper level", spellblock: "Spell Block", action: "Action" },
+        { name: "Name",
+          armor: "Armor",
+          attackdamage: "Attack Damage", 
+          attackrange: "Attack Range", 
+          hpperlevel: "Hpper level", 
+          spellblock: "Spell Block", 
+          action: "Action" },
       ],
       open: false,
+      openWatchListData :false,
       nameData: [],
-      email: "",
       page: 0,
       rowPerPage: 10,
+      watchListData :"",
+      watchListCount : "",
     };
   }
+
+  /**
+   * this function is use to remove data from the watch list
+   */
+    handleRemoveData = (data) => {
+      console.log("data remove from index", data);
+      const { watchListData } = this.state;
+      this.state.watchListData.splice(data, 1);
+      var count1 = this.state.watchListData.length;
+      this.setState({
+        watchListData,
+        watchListCount : count1
+      })
+    }
+
+  /**
+   * This function is use to go to the dashboard component.
+   */
+    handleOpenCamp = () => {
+      this.setState({
+        openWatchListData : false
+      })
+    }
+
+    /**
+     * This function is use to log out from the application
+     */
+
+    handleLogout = () => {
+      localStorage.clear();
+      this.props.history.push('/')
+    }
+    
   componentDidMount() {
-    this.getData();
+    this.getData();    
   }
+
+  handleOnChange = number => {
+    this.setState({
+      activePage: number
+    });
+  };
+
   /**
    * This function is use to seach the champ according to your entry data.
    */
-  handleChange_Serchbox = event => {
-    const email = event.target.value;
-    this.setState({ email });
-    console.log("event occur in search field", this.state.email);
-    getSearchResult(this.state.email).then(res => {
-      console.log("Response occur while heating search back-end Api", res.data);
-      this.setState({
-        pandascoreData: res.data
+
+  handleChange_Serchbox = (event) => {
+    try {
+      const searchData = event.target.value;
+      getSearchResult(searchData).then(res => {
+        var pandaDataSort = res.data;
+        this.setState({
+          currentDataDisplay : pandaDataSort
+        }, console.log(this.state.currentDataDisplay)
+        )
+      }).catch(err => {
+        console.log("err occr", err);
       })
-    }).catch(err => {
-      console.log("err occr", err);
-    })
+    } catch (error) {
+      console.log(error); 
+    } 
   }
   /**
    * <handleAllDetail This function is use to know all details of the champ>
    * @param {data} data this is discribe all the details of the selected candiadte
    */
+
   handleAllDetail = (data) => {
+    console.log("key value to find details odf the users",data);
+    
     this.setState({
       open: true,
     })
@@ -62,7 +129,7 @@ export class dashboardcomponent extends Component {
     this.setState({
       open: false
     });
-    window.location.reload(false);
+     window.location.reload(false);
   };
   /**
    * This is use to handle next button.
@@ -71,7 +138,6 @@ export class dashboardcomponent extends Component {
     this.setState({
       count: this.state.count + 1
     })
-    console.log("onclick counting", this.state.count);
     this.getData();
   }
   /**
@@ -104,30 +170,56 @@ export class dashboardcomponent extends Component {
  * ThandleWatchList - this function is use to handle all selected condidate in sepetrate component form easy to access. 
  */
   handleWatchList = () => {
-    var data = {
-      watchlist: this.state.selectedData
-    }
-    this.props.history.push('/dashboard/watchlist', data)
-
+    var unquie = this.state.selectedData;
+    var data = [...new Set(unquie)]
+    var count1 = data.length
+    this.setState({
+      watchListCount : count1,
+      watchListData : data,
+      openWatchListData : true
+    })
   }
+
+
+
 /**
  * getData - this function is use to take response from back-end api
  */
+
   getData = () => {
-    /**
-     * heating back-end API here and get response
-     */
-    getAllData(this.state.count)
+  const indexOfLastPost = this.state.currentPage * this.state.rowPageRange;
+  const indexOfFirstPost = indexOfLastPost - this.state.rowPageRange;
+    getAllData()
       .then((res) => {
+        var pandaDataSort1 = res.data;
+        console.log(pandaDataSort1);
+        
+        pandaDataSort1.sort(function (x, y) {
+          let a = x.name.toUpperCase(),
+              b = y.name.toUpperCase();
+          return a === b ? 0 : a > b ? 1 : -1;
+        });
+        const currentPosts = pandaDataSort1.slice(indexOfFirstPost, indexOfLastPost)
+
+        //change page  
         this.setState({
-          pandascoreData: res.data,
+          pandascoreData : pandaDataSort1,
+          currentDataDisplay : currentPosts,
         })
-        console.log("response coming from back-end api", this.state.pandascoreData);
       })
       .catch((err) => {
         console.log("err occur while heating backend - api", err);
       });
   };
+
+  handlePageChange= async(page) =>{
+    console.log(page);
+  await this.setState({
+     currentPage : page
+   })
+   this.getData()
+  }
+
 
   handleLogout = () => {
     localStorage.clear();
@@ -137,7 +229,6 @@ export class dashboardcomponent extends Component {
     this.state.pandascoreData.map(data => {
       return { ...data, selected: false };
     });
-
     const pandascoreTableTitle = this.state.columns.map(key => {
       return (
         <div className="Table_">
@@ -153,7 +244,7 @@ export class dashboardcomponent extends Component {
         </div>
       )
     })
-    const pandascoreTable = this.state.pandascoreData.slice(this.state.page * this.state.rowPerPage, this.state.page * this.state.rowPerPage + this.state.rowPerPage).map((key, index) => {
+    const pandascoreTable = this.state.currentDataDisplay.slice(this.state.page * this.state.rowPerPage, this.state.page * this.state.rowPerPage + this.state.rowPerPage).map((key, index) => {
       return (
         <div className="Table_">
           <tr>
@@ -168,9 +259,12 @@ export class dashboardcomponent extends Component {
         </div>
       )
     })
+    
     return (
       <Fragment>
         <Helmet><title>Pandascore - Dashboard</title></Helmet>
+
+{!this.state.openWatchListData ? 
         <div id="dashboard-home">
           <section>
             <div className="dash">
@@ -189,17 +283,32 @@ export class dashboardcomponent extends Component {
                   onClick={this.handleLogout}> Logout </div>
               </div>
             </div>
+
             {pandascoreTableTitle}
             {pandascoreTable}
-            <div className="panda-div-3">
+
+            {/* <Pagination postsPerpage={this.state.rowPageRange} totalPosts ={this.state.pandascoreData.length}
+              //  paginate={paginate}
+             /> */}
+
+
+<Pagination 
+        dataCount={this.state.pandascoreData.length} 
+        pageSize={this.state.rowPageRange}
+        onPageChange={this.handlePageChange}
+        currentPage={this.state.currentPage} />
+
+
+            {/* <div className="panda-div-3">
               <Button variant="contained" color="inherit" onClick={this.handlePrevious}>Previous</Button>
-              <Button variant="contained" color="primary" onClick={this.handleNext}>Next</Button>
-            </div>
+              <Button variant="contained" color="primary" onClick={this.handleNext}>Next</Button>   
+            </div> */}
+          
 
             {/**
                * Dialogue box, after clicking on Name it will display details of champion.
                */}
-            <div>
+            {/* <div> */}
               <Dialog
                 fullScreen
                 open={this.state.open}
@@ -208,23 +317,13 @@ export class dashboardcomponent extends Component {
                   color="inherit"
                   onClick={this.handleClose}
                   aria-label="Close">
-                  <div className="panda-div-4">
-                    <div className="proj-name">
-                      <span className="name-1">Panda</span>
-                      <span className="name-2">
-                        Score
-                </span>
-                    </div>
-                    <div className="closeicon">
-                      <div> <CloseIcon onClose={this.handleClose} /> </div>
-                    </div>
-                  </div>
+                
                   {/**
                      *  @param   {nameData} nameData all champion data present here, and access from state.
                      */}
                   {this.state.nameData.map(key => {
                     return (
-                      <div className="panda-div-5">
+                      <div className="panda-div-5" style={{display:"flex"}}>
                         <div>
                           <img src={key.big_image_url} alt="champ img" />
                           <div className="panda-img">{key.name}</div>
@@ -232,7 +331,7 @@ export class dashboardcomponent extends Component {
                         {/*
                           * This is display all the details of champion player 
                           */}
-                        <div className="panda-div-6">
+                        <div className="panda-div-6" style={{display:"flex", justifyContent:"space-around"}}>
                           <div>
                             <div>Armor - {key.armor}</div>
                             <div>Armor Per Level - {key.armorperlevel}</div>
@@ -268,10 +367,52 @@ export class dashboardcomponent extends Component {
                   })}
                 </div>
               </Dialog>
-            </div>
+            {/* </div> */}
 
           </section>
         </div>
+:
+<div id="watchlist-container">
+<section>
+  <div className="watchlist">
+    <div className="name-main">
+      <span className="name-1">Panda</span>
+      <span className="name-2">
+        Score
+      </span>
+    </div>
+   <div> <h4> No of Selected Champion : {this.state.watchListCount}</h4></div>
+    <div className="champ-main">
+      <div className="champ"
+        onClick={this.handleOpenCamp} >Champion List </div>
+      <div className="logout"
+        onClick={this.handleLogout}> Logout </div>
+    </div>
+  </div>
+  {
+  //  This logic is use to display data in watch list which is selected from user
+    this.state.watchListData.map((key, index) => {
+      return (
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+          <table>
+            <tr >
+              <td>{key.name}</td>
+              <td>Armor - {key.armor}</td>
+              <td>Attack Damage - {key.attackdamage}</td>
+              <td> Attack Range - {key.attackrange}</td>
+              <td> Hpper Level - {key.hpperlevel}</td>
+              <td> Spell Block - {key.spellblock}</td>
+              <td><Button style={{color : "red"}} onClick={() => this.handleRemoveData(index)}>Remove</Button></td>
+            </tr>
+          </table>
+        </div>
+      )
+    })
+  }
+</section>
+</div>
+  }
+
       </Fragment>
     )
   }

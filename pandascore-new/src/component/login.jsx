@@ -12,7 +12,6 @@ import Helmet from 'react-helmet';
  */
 
 function mapState(state) {
-  console.log("state info in Login component", state);
   return { state }
 }
 /**
@@ -50,15 +49,19 @@ export class login extends Component {
       email: this.state.email,
       password: this.state.password,
     }
+    localStorage.setItem("Login", "Login")
     this.props.login(_loginData)
+  }
+
+  handle_Reg=()=>{
+    this.props.history.push('/registration')
   }
 
   render() {
     return (
         <Fragment>
             <Helmet><title>Pandascore - Login</title></Helmet>
-      <div id="login-container">
-       
+      <div id="login-container">   
     <section>
         <div className="login-box">
           <div className="login_">
@@ -91,7 +94,7 @@ export class login extends Component {
                 <Button className="login-button" fullWidth type="submit">
                   Login
                       </Button></div>
-              <div className="register-button">Create Account</div>
+              <div className="register-button" onClick={this.handle_Reg}>Create Account</div>
             </ValidatorForm>
           </div>
         </div>

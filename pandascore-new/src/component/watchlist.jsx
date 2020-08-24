@@ -7,12 +7,27 @@ export class Watchlist extends Component {
     super(props)
 
     this.state = {
-      watchListData: this.props.location.state.watchlist,
+      // watchListData: this.props.location.state.watchlist,
+      watchListData :JSON.parse(localStorage.getItem("watchListData")),
+      watchListCount : "",
       columns: [
         { name: "Name", armor: "Armor", attackdamage: "Attack Damage", attackrange: "Attack Range", hpperlevel: "Hpper level", spellblock: "Spell Block", action: "Action" },
       ],
+     
     }
   }
+
+componentDidMount(){
+  
+  // var unique = this.state.watchListData
+  // var data =  [...new Set(unique)];
+  var count1 = this.state.watchListData.length
+  this.setState({
+    // watchListData : data,
+    watchListCount : count1
+  })
+}
+
 /**
  * this function is use to remove data from the watch list
  */
@@ -20,18 +35,21 @@ export class Watchlist extends Component {
     console.log("data remove from index", data);
     const { watchListData } = this.state;
     this.state.watchListData.splice(data, 1);
+    var count1 = this.state.watchListData.length;
     this.setState({
-      watchListData
-    })
+      watchListData,
+      watchListCount : count1
+    }, console.log("data removel process in watchlist component", this.state.watchListCount)
+    )
   }
 /**
  * This function is use to go to the dashboard component.
  */
   handleOpenCamp = () => {
-    var data = {
-      watch: this.state.watchListData
-    }
-    this.props.history.push('/dashboard', data)
+    // var data = {
+    //   watch: this.state.watchListData
+    // }
+    this.props.history.push('/dashboard',)
   }
   /**
    * This function is use to log out from the application
@@ -40,7 +58,9 @@ export class Watchlist extends Component {
     localStorage.clear();
     this.props.history.push('/')
   }
+
   render() {
+ 
     return (
       <Fragment>
         <Helmet> <title>Quiz App -  WatchList</title></Helmet>
@@ -53,9 +73,13 @@ export class Watchlist extends Component {
                   Score
                 </span>
               </div>
+             <div> <h4> No of Selected Champion : {this.state.watchListCount}</h4></div>
               <div className="champ-main">
                 <div className="champ"
                   onClick={this.handleOpenCamp} >Champion List </div>
+                    {/* <Link to="/dashboard">Champion List</Link> */}
+
+
                 <div className="logout"
                   onClick={this.handleLogout}> Logout </div>
               </div>
@@ -73,7 +97,7 @@ export class Watchlist extends Component {
                         <td> Attack Range - {key.attackrange}</td>
                         <td> Hpper Level - {key.hpperlevel}</td>
                         <td> Spell Block - {key.spellblock}</td>
-                        <td><Button onClick={() => this.handleRemoveData(index)}>Remove</Button></td>
+                        <td><Button style={{color : "red"}}   onClick={() => this.handleRemoveData(index)}>Remove</Button></td>
                       </tr>
                     </table>
                   </div>

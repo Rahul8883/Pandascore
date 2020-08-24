@@ -1,0 +1,73 @@
+#registration-container {
+    background-image: url('../../assets/home-back.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: space-around;
+    section {
+        // background-color: rgba(0, 0, 0, 0.7);
+        border-radius: 10px;
+        border: 2px solid #ab7c7c;
+        box-shadow: $shadow;
+        height: 85%;
+        width: 35%;
+        padding: 50px;
+    }
+}
+
+@media (max-width: 360px) {
+    #registration-container section {
+        border-radius: 0px;
+        border: none;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.8);
+        height: 100%;
+        width: 100%;
+        padding: 24px;
+    }
+}
+
+@media (max-width: 400px) {
+    #registration-container section {
+        border-radius: 0px;
+        border: none;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.8);
+        height: 100%;
+        width: 100%;
+        padding: 24px;
+    }
+}
+
+@media (max-width: 700px) {
+    #registration-container section {
+        border-radius: 0px;
+        border: none;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.8);
+        height: 100%;
+        width: 100%;
+        padding: 65px;
+    }
+}
+
+@media (max-width: 800px) {
+    #registration-container section {
+        border-radius: 10px;
+        border: 2px solid #ab7c7c;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.8);
+        height: 95%;
+        width: 54%;
+        padding: 21px;
+    }
+}
+
+@media (max-width: 1030px) {
+    #registration-container section {
+        border-radius: 10px;
+        border: 2px solid #ab7c7c;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.12), 0 1px 5px 0 rgba(0, 0, 0, 0.8);
+        height: 100%;
+        width: 54%;
+        padding: 50px;
+    }
+}
