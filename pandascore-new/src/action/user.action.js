@@ -17,6 +17,7 @@ function login(data) {
                     localStorage.setItem("token", pandascoreToken)
                     dispatch(success(user));
                     window.location.href = '/dashboard'
+
                 },
                 error => {
                     dispatch(failure(error));

@@ -11,6 +11,7 @@
         "axios": "^0.19.2",
         "better-docs": "^2.3.0",
         "bootstrap": "^4.4.1",
+        "disable-browser-back-navigation": "^0.1.0",
         "jsdoc": "^3.6.4",
         "material-table": "^1.57.2",
         "node-sass": "^4.13.1",

@@ -8,9 +8,8 @@ export default function Pagination(props) {
     const pages=_.range(1,pagesCount+1);
     return (
         <div style={{display: "flex",
-            justifyContent: "flex-end",
-            marginTop: "27px",
-            width: "87.7em"}}>
+            justifyContent: "center",
+            marginTop: "27px"}}>
             <nav aria-label="...">
                 <ul class="pagination">
                     {pages.map((page)=>{

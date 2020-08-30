@@ -33,9 +33,12 @@ export class login extends Component {
 /**
  * These function is use for event occur in text field
  */
+
   handleChange_email = event => {
     const email = event.target.value;
     this.setState({ email });
+    // window.onpopstate = function(e) { window.history.forward(1); }
+
   }
   handleChange_password = event => {
     const password = event.target.value;
@@ -44,7 +47,7 @@ export class login extends Component {
 /**
  * This function is use to submit all the data which is submited from user end and hit the backend part.
  */
-  handleSubmit = () => {
+  handleSubmit = (e) => {
     let _loginData = {
       email: this.state.email,
       password: this.state.password,
@@ -52,7 +55,9 @@ export class login extends Component {
     localStorage.setItem("Login", "Login")
     this.props.login(_loginData)
   }
-
+    // this.props.history.replace({ pathname: '/dashboard' })  }
+// componentDidMount(){
+// }
   handle_Reg=()=>{
     this.props.history.push('/registration')
   }
