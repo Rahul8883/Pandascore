@@ -4,7 +4,6 @@ import Helmet from "react-helmet";
 import { Slide, Button,} from "@material-ui/core";
 import Dialog from '@material-ui/core/Dialog';
 import Pagination from '../component/pagination';
-import Watchlist from './watchlist'
 function Transition(props) {
   return <Slide direction="up" {...props} />;
 }
@@ -81,7 +80,11 @@ export class dashboardcomponent extends Component {
     
   componentDidMount() {
     this.getData();  
-    debugger
+    if (this.props.location.state) {
+      this.setState({
+        selectedData: this.props.location.state
+      })
+    }
   }
 
   handleOnChange = number => {
@@ -133,35 +136,32 @@ export class dashboardcomponent extends Component {
     });
      window.location.reload(false);
   };
-  /**
-   * This is use to handle next button.
-   */
-  handleNext = () => {
-    this.setState({
-      count: this.state.count + 1
-    })
-    this.getData();
-  }
-  /**
-   * This is use to handle previous button.
-   */
-  handlePrevious = () => {
-    this.setState({
-      count: this.state.count - 1
-    })
-    this.getData();
-  }
+ 
+
   /**
    * <handleSelectData  this function is use for select champion.>
    * @param {data} data this is selected compion which is shorted from all list
    */
   handleSelectData = (data) => {
-    console.log(data);
-    let wishTeam = [...this.state.selectedData]
-    wishTeam.push(data);
+    const { pandascoreData } = this.state;
+    pandascoreData[data].selected = !pandascoreData[data].selected
     this.setState({
-      selectedData : wishTeam
+      pandascoreData
     })
+    this.state.pandascoreData.map(key => {
+      if (key.selected) {
+        this.state.selectedData.push(key);
+      }
+      return null;
+    })
+
+    // console.log(data);
+    // let wishTeam = [...this.state.selectedData]
+    //     wishTeam.push(data);
+    //    let uniq = [...new Set(wishTeam)];
+    // this.setState({
+    //   selectedData : uniq
+    // })
   }
 /**
  * ThandleWatchList - this function is use to handle all selected condidate in sepetrate component form easy to access. 
@@ -169,7 +169,7 @@ export class dashboardcomponent extends Component {
   handleWatchList = () => {
    
     var WatchListDataSend= {
-      watchListData :this.state.selectedData,
+      watchListData :[...new Set(this.state.selectedData)],
     }
     this.props.history.push('/watchlist', WatchListDataSend)
   }
@@ -183,11 +183,6 @@ export class dashboardcomponent extends Component {
     getAllData()
       .then((res) => {
         var pandaDataSort1 = res.data;
-        pandaDataSort1.sort(function (x, y) {
-          let a = x.name.toUpperCase(),
-              b = y.name.toUpperCase();
-          return a === b ? 0 : a > b ? 1 : -1;
-        });
         const currentPosts = pandaDataSort1.slice(indexOfFirstPost, indexOfLastPost)
         this.setState({
           pandascoreData : pandaDataSort1,
@@ -241,7 +236,7 @@ export class dashboardcomponent extends Component {
             <td >{key.attackrange}</td>
             <td >{key.hpperlevel}</td>
             <td >{key.spellblock}</td>
-            <td >{key.selected ? <img src={require('../assets/check.svg')} alt="tpglogo" /> : <Button variant="outlined" color="secondary" onClick={() => this.handleSelectData(key)}>Add</Button>}</td>
+            <td>{key.selected ? <Button variant="outlined" color="secondary" onClick={() => this.handleRemoveData(index)}>Remove</Button>: <Button variant="outlined" color="secondary" onClick={() => this.handleSelectData(index)}>Add</Button>}</td>
           </tr>
         </div>
       )
@@ -265,22 +260,19 @@ export class dashboardcomponent extends Component {
                 <div className="panda-div-2"
                   onClick={this.handleWatchList}> 
                   <span> Watch List</span>
-                  <span className="badge">{this.state.watchListCount}</span>
+                  <span className="badge">{[...new Set(this.state.selectedData)].length}</span>
                   </div>
                 <div className="panda-div-2"
                   onClick={this.handleLogout}> Logout </div>
               </div>
             </div>
-
             {pandascoreTableTitle}
             {pandascoreTable}
-<Pagination 
+        <Pagination 
         dataCount={this.state.pandascoreData.length} 
         pageSize={this.state.rowPageRange}
         onPageChange={this.handlePageChange}
-        currentPage={this.state.currentPage} />
-
-
+        currentPage={this.state.currentPage}/>
               <Dialog
                 fullScreen
                 open={this.state.open}
@@ -332,6 +324,7 @@ export class dashboardcomponent extends Component {
                             <div>spell Block Per Level - {key.spellblockperlevel}</div>
                             <div>Video Game Version - {key.videogame_versions}</div>
                           </div>
+
                         </div>
                       </div>
                     )

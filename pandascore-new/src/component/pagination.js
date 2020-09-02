@@ -3,7 +3,6 @@ import _ from 'lodash'
 
 export default function Pagination(props) {
     const {pageSize, dataCount, onPageChange, currentPage}=props;
-    console.log("current page"+currentPage)
     const pagesCount=Math.ceil(dataCount/pageSize);
     const pages=_.range(1,pagesCount+1);
     return (
@@ -11,11 +10,11 @@ export default function Pagination(props) {
             justifyContent: "center",
             marginTop: "27px"}}>
             <nav aria-label="...">
-                <ul class="pagination">
+                <ul className="pagination">
                     {pages.map((page)=>{
                         return(
-                        <li key={page}class={(page===currentPage)?"page-item active":"page-item"}>
-                        <a class="page-link" href="#" onClick={()=>onPageChange(page)}>{page}</a>
+                        <li key={page} className={(page===currentPage)?"page-item active":"page-item"}>
+                        <a className="page-link" href="#" onClick={()=>onPageChange(page)}>{page}</a>
                         </li>
                         )
                     })}

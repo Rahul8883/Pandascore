@@ -4,7 +4,7 @@
  *
  */
 import React from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { Redirect, Route, withRouter } from 'react-router-dom';
 
 const PrivateRoutes = ({ component: Component, ...rest }) => {  
   var session_token=localStorage.getItem('token')
@@ -26,4 +26,4 @@ const PrivateRoutes = ({ component: Component, ...rest }) => {
 };
 
 
-export default PrivateRoutes;
+export default withRouter(PrivateRoutes);

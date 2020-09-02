@@ -42,7 +42,5 @@ export function getAllData(data) {
  */
 
 export function getSearchResult(data) {
-    console.log("data found in service for search result", data);
-
     return axios.get(`https://api.pandascore.co/lol/champions?search[name]=${data}&token=` + localStorage.getItem("token"))
 }
