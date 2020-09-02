@@ -12,6 +12,7 @@ import Dashboard from './component/dashboard'
  */
 function App (){
     return (
+      <div>
       <Router>
         <Switch>
           <Route path="/" exact component={Home}></Route>
@@ -22,6 +23,7 @@ function App (){
           <Route component={NotFound}></Route>
           </Switch>
       </Router>
+      </div>
     )
   }
 

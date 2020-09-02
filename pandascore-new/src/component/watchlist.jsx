@@ -34,7 +34,7 @@ componentDidMount(){
   // })
 }
 handleOpenCamp = () => {
-  this.props.history.push('/dash', this.state.watchListData, this.state.selectValue)
+  this.props.history.push('/dashboard', this.state.watchListData, this.state.selectValue)
   window.onpopstate = function (e) { window.history.forward(1); }
 
 }
